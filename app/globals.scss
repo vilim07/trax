@@ -1,0 +1,88 @@
+@layer tailwind-base, primereact, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+}
+main {
+  height: 100%;
+}
+
+.p-inputwrapper {
+  i {
+    //Fix for missaligned icons in input
+    display: flex;
+    cursor: pointer;
+  }
+}
+
+.card {
+  @apply bg-white-lilac border-whisper border-[0.5px] rounded-[8px];
+}
+
+
+nav {
+  svg{
+    @apply transition-all;
+  }
+  ul{
+    li a {
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        height: 5px;
+        width: 100%;
+        @apply bg-ghost;
+        transform: translateY(50%);
+      }
+      &.active {
+        &::before {
+          @apply bg-orange;
+        }
+      }
+      &.active, &:hover{
+        svg{
+          @apply fill-white-lilac
+        }
+      }
+    }
+    li:last-of-type a::before{
+      border-radius: 0 4px 4px 0;
+    }
+    li:first-of-type a::before{
+      border-radius: 4px 0 0 4px;
+    }
+  }
+  ul li a, button{
+      div{
+        @apply flex transition-all;
+      }
+      &:hover{
+        div{
+          svg{
+            @apply fill-white-lilac
+
+          }
+          @apply scale-110;
+        }
+      }
+  }
+}
+
+.p-calendar-w-btn{
+  .p-button-icon-only{
+    @apply bg-white border-none;
+  }
+}
