@@ -1,12 +1,10 @@
-import NextAuth, { NextAuthOptions } from "next-auth"
+import NextAuth, { AuthOptions, NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from "@/app/firebase/firebase";
-import { FirestoreAdapter } from "@auth/firebase-adapter";
-import { adminAuth, adminDb } from "@/app/firebase/firebase-admin";
 
 
-export const authOptions: NextAuthOptions = {
+const authOptions: AuthOptions = {
   pages: {
     signIn: '/login',
   },
@@ -48,4 +46,4 @@ export const authOptions: NextAuthOptions = {
 
 const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST, authOptions }

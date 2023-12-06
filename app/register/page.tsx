@@ -5,16 +5,19 @@ import { Password } from 'primereact/password';
 import Image from 'next/image'
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
-import { auth } from '../firebase/firebase';
-import Button from '../components/common/Button';
-import { useAuth } from "../contexts/AuthContext";
+import Button from '@/app/components/common/Button';
+import { useAuth } from "@/app/contexts/AuthContext";
 import { signIn } from 'next-auth/react';
+import { useToast } from '@/app/contexts/ToastContext';
+import { UserCredential } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 
 export default function Register() {
 
-  const {signUp, useRouteAuth} = useAuth();
+  const { signUp } = useAuth();
+  const { showError, showSuccess } = useToast();
+  const router = useRouter()
 
-  useRouteAuth()
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -31,20 +34,42 @@ export default function Register() {
       setPassValid(false)
     }
 
-    try {
-      signUp(email, password)
-        .then(async () => {
-          signIn('credentials', { email, password, redirect: true, callbackUrl: '/' })
-        })
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setIsLoading(false)
-    }
+    signUp(email, password)
+      .then(() => {
+        signIn('credentials', { email, password, redirect: false, callbackUrl: "/" })
+        .then(response => {
+          // Check if the response is defined
+          if (response) {
+              const { ok, error } = response;
+  
+              if (ok) {
+                  showSuccess("Welcome user!");
+
+                  router.push("/");
+              }
+          } else {
+              console.error("SignIn response is undefined");
+          }
+      })
+      })
+      .catch((error: any) => {
+        if (error.code == "auth/email-already-in-use") {
+          showError("The email address is already in use");
+        } else if (error.code == "auth/invalid-email") {
+          showError("The email address is not valid.");
+        } else if (error.code == "auth/operation-not-allowed") {
+          showError("Operation not allowed.");
+        } else if (error.code == "auth/weak-password") {
+          showError("The password is too weak.");
+        }
+      })
+      .then(async () => {
+      })
+    setIsLoading(false)
   }
 
   return (
-    <div className='m-auto w-[400px]'>
+    <div className='my-auto w-[400px] mx-[15px]'>
       <div className='card flex flex-col items-center pt-[44px] px-[35px] pb-[60px] mb-[30px]'>
         <h2 className='text-2xl text-ebony font-bold'>Register</h2>
         <form onSubmit={submit} className='flex flex-col w-full mt-[50px] gap-y-[30px]'>

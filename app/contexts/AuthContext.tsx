@@ -7,13 +7,12 @@ import { useRouter } from 'next/navigation';
 import { SessionProvider as Provider } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
 
-// User data type interface
-interface UserType {
-    email: string | null;
-    uid: string | null;
-}
+type ToastContextProps = {
+    signUp: (email: string, password: string) => void;
+    useRouteAuth: () => void;
+};
 
-const AuthContext = createContext({});
+const AuthContext = createContext<ToastContextProps | undefined>(undefined);
 
 export const useAuth = () => useContext<any>(AuthContext);
 

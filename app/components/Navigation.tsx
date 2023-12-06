@@ -5,7 +5,7 @@ import { signOut } from 'next-auth/react';
 import Image from "next/image";
 import HistoryIcon from '@/app/components/icons/HistoryIcon';
 import StopwatchIcon from "@/app/components/icons/StopwatchIcon";
-import LogoutIcon from "./icons/LogoutIcon";
+import LogoutIcon from "@/app/components/icons/LogoutIcon";
 
 export default function Navigation() {
 

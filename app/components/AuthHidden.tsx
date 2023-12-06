@@ -1,19 +1,18 @@
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../api/auth/[...nextauth]/route';
+'use client'
+import { useSession } from 'next-auth/react';
 import { ReactElement } from 'react';
 
 
 
-export default async function AuthHidden({ children }: { children: ReactElement  }) {
+export default function AuthHidden({ children }: { children: ReactElement  }) {
 
-    //Using getServerSession because it loads user data before useSession
-    const session = await getServerSession(authOptions)
-    
+    const { data: session } = useSession();
+
     if (session?.user) {
-        return children;
+      return <>{children}</>;
     }
-
-    return null
+  
+    return null;
 
 };
 

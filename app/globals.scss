@@ -86,3 +86,27 @@ nav {
     @apply bg-white border-none;
   }
 }
+.p-paginator{
+  .p-paginator-pages{
+    .p-paginator-page{
+      border-radius: 4px;
+    }
+    .p-highlight{
+      @apply bg-ghost;
+      border-color: transparent;
+      color: white;
+    }
+  }
+  .p-link{
+    border-radius: 4px;
+    img{
+    }
+  }
+}
+
+.p-toast{
+  >div{
+    background: white;
+    border-radius: 6px;
+  }
+}

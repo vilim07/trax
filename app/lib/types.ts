@@ -16,5 +16,6 @@ export interface Tracker {
 export interface FilterState {
   start: null | Date; 
   end: null | Date; 
-  keywords: string
+  keywords: string;
+  primed: boolean
 }

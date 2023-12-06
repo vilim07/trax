@@ -8,33 +8,54 @@ import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Button from '@/app/components/common/Button';
 import { signIn } from 'next-auth/react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '@/app/contexts/AuthContext';
+import { useToast } from '@/app/contexts/ToastContext';
+
 
 
 export default function Login() {
 
     const {useRouteAuth} = useAuth();
-
-    useRouteAuth()
+    const {showError, showSuccess} = useToast();
+    const router = useRouter()
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [passValid, setPassValid] = useState(true);
+
+
 
     async function submit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
         setIsLoading(true)
-
         try {
-            signIn('credentials', { email, password, redirect: true, callbackUrl: '/' })
-        } catch (error) {
+            signIn('credentials', { email, password, redirect: false, callbackUrl: "/"})
+            .then(response => {
+                // Check if the response is defined
+                if (response) {
+                    const { ok, error } = response;
+        
+                    if (ok) {
+                        showSuccess("Welcome user!");
+
+                        router.push("/");
+                    } else {
+                        console.log(error);
+                        showError("Credentials do not match!");
+                    }
+                } else {
+                    console.error("SignIn response is undefined");
+                }
+            })
+            .catch(error => {
+                console.error("Error during signIn:", error);
+            });
         } finally {
             setIsLoading(false)
         }
     }
     return (
-        <div className='m-auto w-[400px]'>
+        <div className='my-auto w-[400px] mx-[15px]'>
             <div className='card flex flex-col items-center pt-[44px] px-[35px] pb-[60px] mb-[30px]'>
                 <h2 className='text-2xl text-ebony font-bold'>Login</h2>
                 <form onSubmit={submit} className='flex flex-col w-full mt-[50px] gap-y-[30px]'>
@@ -49,7 +70,6 @@ export default function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                         feedback={false}
-                        className={!passValid ? "p-invalid" : ""}
                         inputClassName="w-full border-0 text-lg leading-none py-[12px] rounded-[3px] px-[20px]" />
 
                     <Button className={'bg-orange w-full ' + (isLoading && "opacity-75	")} disabled={isLoading} type={'submit'}>Login</Button>

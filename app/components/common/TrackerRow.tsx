@@ -58,9 +58,9 @@ export default function TrackerRow({ data, editing, setEditing }: { data: Tracke
     }
 
     return (
-        <div className='flex leadin-none'>
-            <div className='basis-[221px] flex items-center px-[30px] py-[24px] border-whisper border-[0.5px]'>{timer}</div>
-            <div className={`basis-[715px] flex items-center px-[30px] ${editing != data.id && " py-[24px]"} border-whisper border-[0.5px]`}>
+        <div className='flex leadin-none text-lynch'>
+            <div className='basis-[221px] flex items-center px-[30px] py-[24px] border-whisper border-[0.5px] font-bold'>{timer}</div>
+            <div className={`basis-[715px] flex items-center px-[30px] ${editing != data.id && " py-[24px] font-semibold"} border-whisper border-[0.5px]`}>
                 {editing==data.id ? 
                     <form className="w-full" onSubmit={(e) => {e.preventDefault(); submit()}}>
                         <InputText value={desc} className='w-full' onChange={(e) => setDesc(e.target.value)} placeholder='Press enter or click the save button on the right to save'/>

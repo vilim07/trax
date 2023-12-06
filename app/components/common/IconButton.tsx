@@ -4,7 +4,7 @@ export default function IconButton({ src, alt, func }: { src: string; alt: strin
 
 
     return (
-        <button type='button' className="hover:shadow-lg hover:scale-110 rounded-full transition-all" onClick={func}>
+        <button type='button' className="hover:scale-125 rounded-full transition-all" onClick={func}>
             <Image
                 src={src}
                 width="24"

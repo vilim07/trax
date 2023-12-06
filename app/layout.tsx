@@ -4,6 +4,7 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import Header from '@/app/components/Header';
 import { Nunito_Sans } from 'next/font/google'
 import { AuthContextProvider } from '@/app/contexts/AuthContext';
+import { ToastContextProvider } from '@/app/contexts/ToastContext';
 
 
 const nunitoSans = Nunito_Sans({
@@ -29,10 +30,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={nunitoSans.className + ' text-ebony'}>
         <AuthContextProvider>
+          <ToastContextProvider>
             <Header />
-            <main className='flex'>
+            <main className='flex justify-center'>
               {children}
             </main >
+          </ToastContextProvider>
         </AuthContextProvider>
 
       </body>
